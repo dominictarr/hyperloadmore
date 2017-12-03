@@ -21,9 +21,12 @@ to emit another "hasmore" event.
 properties to indicate whether the new content is to be added
 at the start or end. ("detail" is a feature of [CustomEvents api](https://davidwalsh.name/customevent))
 
+## scrolling
+
+This is also an idea towards a better infinite scroller. We need to decouple the control part from the application.
+I want the incoming data to be decoupled from the thing which manages the scrolling.
+
 ## example
-
-
 
 ``` js
 var HyperLoadMore = require('hyperloadmore')
@@ -42,7 +45,24 @@ content.addEventListener('readymore', function (ev) {
 document.body.appendChild(HyperLoadMore(content))
 
 content.dispatchEvent(
-new CustomEvent('hasmore', {target: content, detail: {bottom: true, count: 10}})
+  new CustomEvent('hasmore', {target: content, detail: {bottom: true, count: 10}})
+)
+```
+
+## example 2: streams helper
+
+``` js
+var HyperLoadMore = require('hyperloadmore')
+var Streams = require('hyperloadmore/stream')
+var h = require('hyperscript')
+var content = h('div.content')
+
+document.body.appendChild(HyperLoadMore(content))
+
+pull(
+  source,
+  pull.map(render), //turn into an html element
+  streams.bottom(content) //stream into the loadmore! that's all!
 )
 ```
 
@@ -65,9 +85,15 @@ content.dispatchEvent(new CustomEvent('hasmore', {
     count: N //optional.
   }
 }))
-
 ```
 
+## streams
+
+see also, streams helper
+
+``` js
+
+```
 
 ## License
 
