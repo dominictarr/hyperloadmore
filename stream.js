@@ -8,6 +8,7 @@ function stream (content, isTop) {
   })
 
   content.addEventListener('readymore', function (ev) {
+    if(!(isTop ? ev.detail.top : ev.detail.bottom)) return
     var l = Math.min(queue.getLength(), 10)
     var first
     for(var i = 0; i < l; i++) {
